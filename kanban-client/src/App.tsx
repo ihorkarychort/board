@@ -43,10 +43,6 @@ const url = import.meta.env.VITE_API_URL;
   const [editDesc, setEditDesc] = useState('');
   const [selectedColumnId, setSelectedColumnId] = useState('');
 
-  
-  // useEffect(() => {
-  //   dispatch(fetchBoards());
-  // }, [dispatch]);
 
   useEffect(() => {
   fetch(`${url}/boards`)
