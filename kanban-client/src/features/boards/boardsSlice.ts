@@ -43,10 +43,20 @@ export const fetchBoardById = createAsyncThunk('boards/fetchBoardById', async (b
 });
 
 // Create Board
-export const createBoard = createAsyncThunk('boards/createBoard', async (title: string) => {
-  const res = await axios.post<Board>(API_URL, { title });
-  return res.data;
-});
+export const fetchBoards = createAsyncThunk(
+  'boards/fetchBoards',
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await axios.get<Board[]>(API_URL);
+      return res.data;
+    } catch (err: any) {
+      if (err.response && err.response.data?.error) {
+        return rejectWithValue(err.response.data.error);
+      }
+      return rejectWithValue('Unexpected error occurred');
+    }
+  }
+);
 
 // Delete Board
 export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (id: string) => {
@@ -183,7 +193,7 @@ const boardsSlice = createSlice({
         state.error = action.error.message ?? 'Failed to fetch board';
       })
 
-      // createBoard
+     // createBoard
       .addCase(createBoard.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -193,9 +203,9 @@ const boardsSlice = createSlice({
         state.loading = false;
       })
       .addCase(createBoard.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message ?? 'Failed to create board';
-      })
+  state.loading = false;
+  state.error = action.payload as string ?? 'Failed to create board';
+})
 
       // deleteBoard
       .addCase(deleteBoard.fulfilled, (state, action) => {
