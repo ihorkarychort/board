@@ -58,9 +58,13 @@ const url = import.meta.env.VITE_API_URL;
   }, [activeBoardId, dispatch]);
 
   const handleLoadBoard = () => {
-    if (!inputBoardId.trim()) return;
-    dispatch(setActiveBoard(inputBoardId.trim()));
-  };
+  if (!inputBoardId.trim()) {
+    alert('Будь ласка, введіть ID дошки.');
+    return;
+  }
+
+  dispatch(setActiveBoard(inputBoardId.trim()));
+};
 
   const handleSaveBoard = () => {
   if (!boardTitleInput.trim()) {
@@ -132,22 +136,24 @@ const url = import.meta.env.VITE_API_URL;
   };
 
   const handleAddTask = () => {
-    if (!activeBoardId || !newTaskColumnId || !newTaskTitle.trim()) return;
+  if (!activeBoardId || !newTaskColumnId || !newTaskTitle.trim()) {
+    alert('Будь ласка, заповніть назву задачі та виберіть колонку.');
+    return;
+  }
 
-    dispatch(
-      addTaskToColumn({
-        boardId: activeBoardId,
-        columnId: newTaskColumnId,
-        title: newTaskTitle.trim(),
-        description: newTaskDesc.trim(),
-      }),
-    );
+  dispatch(
+    addTaskToColumn({
+      boardId: activeBoardId,
+      columnId: newTaskColumnId,
+      title: newTaskTitle.trim(),
+      description: newTaskDesc.trim(),
+    }),
+  );
 
-    setNewTaskTitle('');
-    setNewTaskDesc('');
-    setNewTaskColumnId('');
-  };
-
+  setNewTaskTitle('');
+  setNewTaskDesc('');
+  setNewTaskColumnId('');
+};
   // Drag & drop
 
   const [draggedTaskId, setDraggedTaskId] = useState<string | null>(null);
