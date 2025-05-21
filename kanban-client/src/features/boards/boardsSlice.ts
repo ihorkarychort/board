@@ -211,7 +211,7 @@ const boardsSlice = createSlice({
       .addCase(createBoard.rejected, (state, action) => {
   state.loading = false;
   state.error = (action.payload as string) ?? 'Failed to create board';
-});
+})
 
 
       // deleteBoard
