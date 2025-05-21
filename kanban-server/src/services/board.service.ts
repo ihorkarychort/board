@@ -8,18 +8,33 @@ export async function getAllBoards() {
 }
 
 export async function getFullBoard(boardId: string): Promise<Board | null> {
+
   const result = await pool.query(
-    `
-    SELECT b.id as board_id, b.title as board_title,
-           c.id as column_id, c.title as column_title,
-           t.id as task_id, t.title as task_title, t.description as task_description
-    FROM boards b
-    LEFT JOIN columns c ON c.board_id = b.id
-    LEFT JOIN tasks t ON t.column_id = c.id
-    WHERE b.id = $1
-  `,
-    [boardId]
-  );
+  `
+  SELECT b.id as board_id, b.title as board_title,
+         c.id as column_id, c.title as column_title, c.position as column_position,
+         t.id as task_id, t.title as task_title, t.description as task_description
+  FROM boards b
+  LEFT JOIN columns c ON c.board_id = b.id
+  LEFT JOIN tasks t ON t.column_id = c.id
+  WHERE b.id = $1
+  ORDER BY c.position ASC
+`,
+  [boardId]
+);
+
+  // const result = await pool.query(
+  //   `
+  //   SELECT b.id as board_id, b.title as board_title,
+  //          c.id as column_id, c.title as column_title,
+  //          t.id as task_id, t.title as task_title, t.description as task_description
+  //   FROM boards b
+  //   LEFT JOIN columns c ON c.board_id = b.id
+  //   LEFT JOIN tasks t ON t.column_id = c.id
+  //   WHERE b.id = $1
+  // `,
+  //   [boardId]
+  // );
 
   if (result.rows.length === 0) return null;
 
@@ -69,12 +84,31 @@ export async function createBoard(title: string) {
       title,
     ]);
 
-    for (const col of defaultColumns) {
-      await client.query(
-        'INSERT INTO columns (id, title, board_id) VALUES ($1, $2, $3)',
-        [col.id, col.title, boardId]
-      );
-    }
+
+
+
+
+
+    const defaultColumns = [
+  { id: generateId(), title: 'To Do', position: 0 },
+  { id: generateId(), title: 'In Progress', position: 1 },
+  { id: generateId(), title: 'Done', position: 2 },
+];
+
+for (const col of defaultColumns) {
+  await client.query(
+    'INSERT INTO columns (id, title, board_id, position) VALUES ($1, $2, $3, $4)',
+    [col.id, col.title, boardId, col.position]
+  );
+}
+
+
+    // for (const col of defaultColumns) {
+    //   await client.query(
+    //     'INSERT INTO columns (id, title, board_id) VALUES ($1, $2, $3)',
+    //     [col.id, col.title, boardId]
+    //   );
+    // }
 
     await client.query('COMMIT');
     return { id: boardId, title, columns: defaultColumns };
