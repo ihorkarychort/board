@@ -6,13 +6,18 @@ type BoardFormProps = {
   onSaveBoard: () => void;
   editingBoardId: string | null;
   setEditingBoardId: (id: string | null) => void;
+  error?: string | null; // додано
+  loading?: boolean;     // додано
 };
+
 
 const BoardForm: React.FC<BoardFormProps> = ({
   boardTitleInput,
   setBoardTitleInput,
   onSaveBoard,
   setEditingBoardId,
+  error,
+  loading,
 }) => {
   return (
     <div className="board-form" style={{ marginBottom: 20 }}>
@@ -28,9 +33,17 @@ const BoardForm: React.FC<BoardFormProps> = ({
           }
         }}
       />
-      <button onClick={onSaveBoard}> Create Board</button>
+      <button onClick={onSaveBoard} disabled={loading}>
+        {loading ? 'Creating...' : 'Create Board'}
+      </button>
+      {error && (
+        <div style={{ color: 'red', marginTop: 8 }}>
+          ⚠️ {error}
+        </div>
+      )}
     </div>
   );
 };
+
 
 export default BoardForm;
