@@ -22,6 +22,7 @@ import TaskForm from './components/TaskForm';
 import BoardColumns from './components/BoardColumns';
 
 const App: React.FC = () => {
+  const url='https://board-1-backend.onrender.com';
   const dispatch = useDispatch<AppDispatch>();
 
   const { boards, activeBoard, activeBoardId, loading, error } = useSelector(
@@ -42,9 +43,17 @@ const App: React.FC = () => {
   const [editDesc, setEditDesc] = useState('');
   const [selectedColumnId, setSelectedColumnId] = useState('');
 
+  
+  // useEffect(() => {
+  //   dispatch(fetchBoards());
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(fetchBoards());
-  }, [dispatch]);
+  fetch(`${url}/boards`)
+    .then((res) => res.json())
+    .then((data) => console.log(data))
+    .catch((err) => console.error('Error fetching boards:', err));
+}, []);
 
   useEffect(() => {
     if (activeBoardId) {
