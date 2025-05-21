@@ -3,7 +3,12 @@ import cors from 'cors';
 import boardRoutes from './routes/board.routes';
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || '*', // краще в .env прописати FRONTEND_URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
+
 app.use(express.json());
 
 app.use('/api', boardRoutes);
