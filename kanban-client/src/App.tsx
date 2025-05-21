@@ -59,7 +59,7 @@ const url = import.meta.env.VITE_API_URL;
 
   const handleLoadBoard = () => {
   if (!inputBoardId.trim()) {
-    alert('Будь ласка, введіть ID дошки.');
+    alert('Please, fill in BoardID.');
     return;
   }
 
@@ -68,7 +68,7 @@ const url = import.meta.env.VITE_API_URL;
 
   const handleSaveBoard = () => {
   if (!boardTitleInput.trim()) {
-    alert('Будь ласка, введіть назву дошки.');
+    alert('Please, fill in BoardName.');
     return;
   }
   dispatch(createBoard(boardTitleInput.trim()));
@@ -136,8 +136,8 @@ const url = import.meta.env.VITE_API_URL;
   };
 
   const handleAddTask = () => {
-  if (!activeBoardId || !newTaskColumnId || !newTaskTitle.trim()) {
-    alert('Будь ласка, заповніть назву задачі та виберіть колонку.');
+  if (!activeBoardId || !newTaskColumnId || !newTaskTitle.trim() || !newTaskDesc.trim()) {
+    alert('Please fill in the task name, description, and select a column.');
     return;
   }
 
