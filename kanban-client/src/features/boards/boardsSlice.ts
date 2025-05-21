@@ -46,16 +46,22 @@ export const createBoard = createAsyncThunk(
   'boards/createBoard',
   async (title: string, { rejectWithValue }) => {
     try {
-      const res = await axios.post(API_URL, { title });
+      const res = await axios.post(API_URL, { title }, {
+        headers: { 'Content-Type': 'application/json' }
+      });
       return res.data;
     } catch (err: any) {
+      // 🔽 Тут дивимося, що саме повертає сервер
+      console.log('❌ Axios error', err.response?.data?.error);
+
       if (err.response && err.response.data?.error) {
-        return rejectWithValue(err.response.data.error); // <-- головне
+        return rejectWithValue(err.response.data.error);
       }
       return rejectWithValue('Unexpected error occurred');
     }
   }
 );
+
 
 
 // Delete Board
