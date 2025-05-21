@@ -63,10 +63,13 @@ const url = import.meta.env.VITE_API_URL;
   };
 
   const handleSaveBoard = () => {
-    if (!boardTitleInput.trim()) return;
-    dispatch(createBoard(boardTitleInput.trim()));
-    setBoardTitleInput('');
-  };
+  if (!boardTitleInput.trim()) {
+    alert('Будь ласка, введіть назву дошки.');
+    return;
+  }
+  dispatch(createBoard(boardTitleInput.trim()));
+  setBoardTitleInput('');
+};
 
   const handleDeleteBoard = (id: string) => {
     if (window.confirm('Delete this board?')) {
