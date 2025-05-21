@@ -22,7 +22,7 @@ import TaskForm from './components/TaskForm';
 import BoardColumns from './components/BoardColumns';
 
 const App: React.FC = () => {
-  const url='https://board-1-backend.onrender.com';
+const url = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch<AppDispatch>();
 
   const { boards, activeBoard, activeBoardId, loading, error } = useSelector(
