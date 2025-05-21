@@ -43,8 +43,8 @@ export const fetchBoardById = createAsyncThunk('boards/fetchBoardById', async (b
 });
 
 // Create Board
-export const fetchBoards = createAsyncThunk(
-  'boards/fetchBoards',
+export const createBoard = createAsyncThunk(
+  'boards/createBoard',
   async (_, { rejectWithValue }) => {
     try {
       const res = await axios.get<Board[]>(API_URL);
