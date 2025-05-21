@@ -42,21 +42,21 @@ export const fetchBoardById = createAsyncThunk('boards/fetchBoardById', async (b
   return res.data;
 });
 
-// Create Board
 export const createBoard = createAsyncThunk(
   'boards/createBoard',
-  async (_, { rejectWithValue }) => {
+  async (title: string, { rejectWithValue }) => {
     try {
-      const res = await axios.get<Board[]>(API_URL);
+      const res = await axios.post(API_URL, { title });
       return res.data;
     } catch (err: any) {
       if (err.response && err.response.data?.error) {
-        return rejectWithValue(err.response.data.error);
+        return rejectWithValue(err.response.data.error); // <-- головне
       }
       return rejectWithValue('Unexpected error occurred');
     }
   }
 );
+
 
 // Delete Board
 export const deleteBoard = createAsyncThunk('boards/deleteBoard', async (id: string) => {
