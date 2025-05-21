@@ -12,14 +12,9 @@ export async function getBoards(req: Request, res: Response) {
 }
 
 export async function getBoardById(req: Request, res: Response) {
-  try {
     const board = await boardService.getFullBoard(req.params.boardId);
     if (!board) return res.status(404).json({ error: 'Board not found' });
     res.json(board);
-  } catch (err: any) {
-    console.error('❌ getBoardById error:', err); // <-- додано
-    res.status(500).json({ error: 'Failed to fetch board' });
-  }
 }
 
 
